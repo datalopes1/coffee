@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: dim_product
+    description: "Dimensão contendo os produtos e seus atributos."
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_store
+    description: "Dimensão contendo as unidades e seus atributos."
+    columns:
+      - name: store_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_sales
+    description: "Tabela fato contendo os dados das transações realizadas."
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+
+      - name: store_id
+        tests:
+          - not_null
+
+      - name: product_id
+        tests:
+          - not_null
+
+  - name: obt_sales
+    description: "One Big Table contendo os dados das transações realizadas."
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
