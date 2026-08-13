@@ -1,0 +1,38 @@
+[project]
+name = "coffeesales"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-core>=1.12.2",
+    "dbt-duckdb>=1.11.0",
+    "dlt>=1.30.0",
+    "duckdb>=1.5.5",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.5",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "B",
+    "UP",
+    "SIM",
+    "C4",
+    "RET",
+    "RUF",
+]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
