@@ -6,6 +6,7 @@ dist/
 wheels/
 *.egg-info
 .ruff_cache
+.pbi
 data/database/dev.duckdb
 
 # Virtual environments

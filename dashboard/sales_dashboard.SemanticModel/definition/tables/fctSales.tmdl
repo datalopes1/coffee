@@ -1,0 +1,98 @@
+table fctSales
+	lineageTag: 9b24c8d3-51d9-44c7-983e-817cb659d7df
+
+	column transaction_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b6525d6-9469-4630-aeee-c1b51ffceb20
+		summarizeBy: sum
+		sourceColumn: transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d86dd2fa-1282-481d-bef8-ea58d67ae07b
+		summarizeBy: none
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e58b4107-cf44-4f66-8c5e-b15edf008c2c
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column work_shift
+		dataType: string
+		lineageTag: 475fa861-1cf4-4435-affe-6dbfe24dce7e
+		summarizeBy: none
+		sourceColumn: work_shift
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_dt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0a9778a6-5213-403d-9d5e-c3a7c15aaefc
+		summarizeBy: none
+		sourceColumn: transaction_dt
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_ts
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c02c6159-f29f-421c-a954-69c2fd068d0e
+		summarizeBy: none
+		sourceColumn: transaction_ts
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: be1904d5-bffe-4fc6-9ec0-309287bffd67
+		summarizeBy: sum
+		sourceColumn: transaction_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: double
+		lineageTag: 2ca5736b-da63-46a6-9f01-6daf70f96116
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_revenue
+		dataType: double
+		lineageTag: 6bfda10a-0df6-49d9-8be7-45f8ebdaaec0
+		summarizeBy: sum
+		sourceColumn: order_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fctSales = m
+		mode: import
+		source =
+				let
+				  Source = DuckDB.Contents("\\wsl.localhost\Ubuntu\home\democratabi\coffeesales\data\database\db.duckdb", "localtoken", true, null, null, []),
+				  #"Navigation 1" = Source{[Item = "fct_sales", Schema = "dwh_mart", Catalog = "db"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

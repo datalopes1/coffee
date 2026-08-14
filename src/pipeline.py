@@ -12,21 +12,32 @@ DBT_DIR = Path("dwh")
 @dlt.resource(name="sales")
 def sales():
     try:
-        logger.info("Iniciada a ingestão de dados.")
-        for file in DATA_DIR.glob("*.xlsx"):
-            logger.info("Processando o arquivo {}.", file.name)
+        for file in sorted(DATA_DIR.glob("*.xlsx")):
+            logger.info("Processando o arquivo: {}", file.name)
+
             df = pd.read_excel(file)
-
-            logger.info("Arquivo carregado: {}. {} registros.", file.name, len(df))
-
             yield from df.to_dict(orient="records")
     except Exception:
         logger.exception("Erro na ingestão dos dados.")
         raise
 
-    
+def run_dlt():
+    try:
+        logger.info("Inicando a ingestão dos dados.")
+        pipeline = dlt.pipeline(
+            pipeline_name="sales",
+            destination=dlt.destinations.duckdb(str(DATABASE_DIR)),
+            dataset_name="raw",
+        )
+
+        pipeline.run(sales, write_disposition='replace')
+        logger.success("Ingestão de dados concluída.")
+    except Exception:
+        raise
+
 def run_dbt():
-    subprocess.run(
+    try:
+        subprocess.run(
             ["dbt", "build"],
             cwd=DBT_DIR,
             check=True
