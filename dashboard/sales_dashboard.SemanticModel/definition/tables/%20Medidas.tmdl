@@ -1,0 +1,67 @@
+table ' Medidas'
+	lineageTag: 9fb09848-3053-4ef4-a5be-8daecb7c06eb
+
+	measure 'Receita Total' =
+			
+			SUM('fctSales'[order_revenue])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Base
+		lineageTag: 8bade0e6-c2de-425d-92c9-5449bd4a07c6
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Qtde Pedidos' =
+			
+			COUNTROWS('fctSales')
+		formatString: #,0
+		displayFolder: Base
+		lineageTag: 476bce1d-a38a-43b6-bc8e-0a98d3f6f7ed
+
+	measure 'Ticket Medio' =
+			
+			DIVIDE([Receita Total], [Qtde Pedidos])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: KPI
+		lineageTag: 1822ddd7-c378-4294-b5e4-0d7e22fac39d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Receita MM 30D' = ```
+			
+			VAR _Periodo = 
+			CALCULATETABLE(
+			    DATESINPERIOD(
+			        'dimCalendario'[Date],
+			        MAX('fctSales'[transaction_dt]),
+			        -30,
+			        DAY
+			    )
+			)
+			RETURN
+			AVERAGEX(
+			    _Periodo,
+			    CALCULATE([Receita Total])
+			)
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: KPI
+		lineageTag: 1483511b-f806-4e70-9ccb-983d181a1ccb
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Value
+		isHidden
+		formatString: 0
+		lineageTag: 43b2305e-ea1a-46fb-b04a-66039a339634
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ' Medidas' = calculated
+		mode: import
+		source = {BLANK()}
+
+	annotation PBI_Id = fc2501f3611746e4b3be1b450ac362c1
+

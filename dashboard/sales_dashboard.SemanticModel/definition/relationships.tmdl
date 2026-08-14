@@ -1,0 +1,12 @@
+relationship AutoDetected_41c5d472-1f6f-4cfc-946d-cf371c4c2154
+	fromColumn: fctSales.product_id
+	toColumn: dimProduct.product_id
+
+relationship AutoDetected_00ca5f91-7fee-4520-896e-d686ddd80f5b
+	fromColumn: fctSales.store_id
+	toColumn: dimStore.store_id
+
+relationship 047e8321-10b5-d88f-1755-bcec2109733f
+	fromColumn: fctSales.transaction_dt
+	toColumn: dimCalendario.Date
+

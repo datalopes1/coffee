@@ -1,0 +1,184 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "70ab2bc0d514a8d79285",
+  "position": {
+    "x": 31.111111111111111,
+    "y": 277,
+    "z": 6,
+    "height": 452,
+    "width": 1232,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dimCalendario"
+                        }
+                      },
+                      "Hierarchy": "Calendario"
+                    }
+                  },
+                  "Level": "Ano"
+                }
+              },
+              "queryRef": "dimCalendario.Calendario.Ano",
+              "nativeQueryRef": "Calendario Ano",
+              "active": false
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dimCalendario"
+                        }
+                      },
+                      "Hierarchy": "Calendario"
+                    }
+                  },
+                  "Level": "Mês"
+                }
+              },
+              "queryRef": "dimCalendario.Calendario.Mês",
+              "nativeQueryRef": "Calendario Mês",
+              "active": true
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dimCalendario"
+                        }
+                      },
+                      "Hierarchy": "Calendario"
+                    }
+                  },
+                  "Level": "Dia"
+                }
+              },
+              "queryRef": "dimCalendario.Calendario.Dia",
+              "nativeQueryRef": "Calendario Dia",
+              "active": false
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": " Medidas"
+                    }
+                  },
+                  "Property": "Receita Total"
+                }
+              },
+              "queryRef": " Medidas.Receita Total",
+              "nativeQueryRef": "Receita Total"
+            }
+          ]
+        },
+        "Y2": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": " Medidas"
+                    }
+                  },
+                  "Property": "Receita MM 30D"
+                }
+              },
+              "queryRef": " Medidas.Receita MM 30D",
+              "nativeQueryRef": "Média Móvel",
+              "displayName": "Média Móvel"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "seriesLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableBackground": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'TopCenter'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data labels'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

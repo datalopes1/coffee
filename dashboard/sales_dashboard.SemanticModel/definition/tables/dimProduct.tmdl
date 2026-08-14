@@ -1,0 +1,49 @@
+table dimProduct
+	lineageTag: a2bce383-3d8a-4488-bcc6-b5e3d9c970e4
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bcacd4d-3c2a-4f44-b9c0-5ce9ebb96edd
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category
+		dataType: string
+		lineageTag: 8cc393b1-dc95-47f2-8fba-71ebf60b2668
+		summarizeBy: none
+		sourceColumn: product_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_type
+		dataType: string
+		lineageTag: 0863eddf-b94b-4749-8ace-6cf6e8c02757
+		summarizeBy: none
+		sourceColumn: product_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_detail
+		dataType: string
+		lineageTag: ff9026e3-d0c7-47e0-89de-62c629f896ba
+		summarizeBy: none
+		sourceColumn: product_detail
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dimProduct = m
+		mode: import
+		source =
+				let
+				  Source = DuckDB.Contents("\\wsl.localhost\Ubuntu\home\democratabi\coffeesales\data\database\db.duckdb", "localtoken", true, null, null, []),
+				  #"Navigation 1" = Source{[Item = "dim_product", Schema = "dwh_mart", Catalog = "db"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

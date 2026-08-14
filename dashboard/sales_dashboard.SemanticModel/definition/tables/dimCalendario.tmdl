@@ -1,0 +1,191 @@
+table dimCalendario
+	lineageTag: 467ec6ff-eeb8-4d97-abe2-3f04ce600618
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 92e27b8a-a453-4a2a-908c-10d2e9bb5ede
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FlagFeriado
+		formatString: 0
+		lineageTag: 87f9ef10-8515-482b-b55a-833d05e140b4
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FlagFeriado]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano
+		formatString: 0
+		lineageTag: da303645-bc47-45c8-ba24-8ea723759c7c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Ano]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesNumero
+		formatString: 0
+		lineageTag: 7154cfec-5d25-4155-bae3-dc96d5be6a9d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MesNumero]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		lineageTag: bf5ff671-6261-4cb5-bd01-4629e1f0ce45
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes]
+		sortByColumn: MesNumero
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesAno
+		lineageTag: 8b09c034-0de9-4e4d-a740-3e353a7b227e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MesAno]
+		sortByColumn: MesAnoOrdem
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesAnoOrdem
+		formatString: 0
+		lineageTag: 77aee817-5f09-45b4-9e4b-1f90f4d85494
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MesAnoOrdem]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		lineageTag: e106be1e-276c-429d-8d06-ac29543709c2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column SemanaAno
+		lineageTag: 87b00e7e-ed93-4fce-b097-80e225da7047
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SemanaAno]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia
+		formatString: 0
+		lineageTag: 5fe4a012-3d00-4056-a560-f98afd3c3b00
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaSemanaNum
+		formatString: 0
+		lineageTag: d922541a-5bef-4861-b0c5-817ff635b77e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DiaSemanaNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaSemana
+		lineageTag: 4a5430c7-5f59-4aa5-ae20-40e65d20c883
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DiaSemana]
+		sortByColumn: DiaSemanaNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaUtil
+		formatString: 0
+		lineageTag: 4cef13de-6382-45a2-8ebc-37e95526a25a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DiaUtil]
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy Calendario
+		lineageTag: 7d3792c3-3776-4160-a6f7-911456da7dbb
+
+		level Ano
+			lineageTag: 8fa5e886-63be-4ce9-bd35-b8d0d7bcb323
+			column: Ano
+
+		level Mês
+			lineageTag: 8d676628-24eb-458e-824e-4d8f03e049de
+			column: MesAno
+
+		level Dia
+			lineageTag: ee44f26c-1d24-432c-8323-3d013b6c62f8
+			column: Date
+
+	partition dimCalendario = calculated
+		mode: import
+		source = ```
+				
+				VAR _DataMin =
+				    DATE ( YEAR(MIN('fctSales'[transaction_dt])), 1, 1 )
+				VAR _DataMax =
+				    DATE ( 2030, 12, 31 )
+				VAR _Base =
+				    ADDCOLUMNS (
+				        CALENDAR ( _DataMin, _DataMax ),
+				        "FlagFeriado",
+				            SWITCH (
+				                TRUE (),
+				                MONTH ( [Date] ) = 1 && DAY ( [Date] ) = 1, 1,
+				                MONTH ( [Date] ) = 2 && DAY ( [Date] ) = 17, 1,
+				                MONTH ( [Date] ) = 3 && DAY ( [Date] ) = 19, 1,
+				                MONTH ( [Date] ) = 3 && DAY ( [Date] ) = 25, 1,
+				                MONTH ( [Date] ) = 4 && DAY ( [Date] ) = 3, 1,
+				                MONTH ( [Date] ) = 4 && DAY ( [Date] ) = 21, 1,
+				                MONTH ( [Date] ) = 5 && DAY ( [Date] ) = 1, 1,
+				                MONTH ( [Date] ) = 6 && DAY ( [Date] ) = 4, 1,
+				                MONTH ( [Date] ) = 8 && DAY ( [Date] ) = 27, 1,
+				                MONTH ( [Date] ) = 9 && DAY ( [Date] ) = 7, 1,
+				                MONTH ( [Date] ) = 10 && DAY ( [Date] ) = 12, 1,
+				                MONTH ( [Date] ) = 10 && DAY ( [Date] ) = 25, 1,
+				                MONTH ( [Date] ) = 11 && DAY ( [Date] ) = 2, 1,
+				                MONTH ( [Date] ) = 11 && DAY ( [Date] ) = 15, 1,
+				                MONTH ( [Date] ) = 11 && DAY ( [Date] ) = 20, 1,
+				                MONTH ( [Date] ) = 12 && DAY ( [Date] ) = 25, 1,
+				                0
+				            )
+				    )
+				RETURN
+				    ADDCOLUMNS (
+				        _Base,
+				        "Ano", YEAR ( [Date] ),
+				        "MesNumero", MONTH ( [Date] ),
+				        "Mes", FORMAT ( [Date], "mmmm" ),
+				        "MesAno", FORMAT ( [Date], "MMM/yyyy" ),
+				        "MesAnoOrdem",
+				            YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+				        "Trimestre", "T" & QUARTER ( [Date] ),
+				        "SemanaAno",
+				            "Sem. " & WEEKNUM([Date], 2),
+				        "Dia", DAY ( [Date] ),
+				        "DiaSemanaNum", WEEKDAY ( [Date], 2 ),
+				        "DiaSemana", FORMAT ( [Date], "ddd" ),
+				        "DiaUtil",
+				            IF ( WEEKDAY ( [Date], 2 ) <= 5 && [FlagFeriado] = 0, 1, 0 )
+				    )
+				
+				```
+
+	annotation PBI_Id = 5aff1384ee1f44bd9f43d8a6aa9bc789
+
