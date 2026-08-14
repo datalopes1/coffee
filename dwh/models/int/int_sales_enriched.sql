@@ -11,7 +11,7 @@ enriched as (
         product_category,
         product_type,
         product_detail,
-        cast(transaction_dt as datetime) as transaction_dt,
+        date_trunc('day', cast(transaction_dt as datetime)) as transaction_dt,
         transaction_qty,
         unit_price,
         date_trunc(
@@ -28,12 +28,12 @@ final as (
         case
             when
                 extract('hour' from transaction_ts) >= 6
-                and extract('hour' from transaction_ts) < 12 then 'MORNING'
+                and extract('hour' from transaction_ts) < 12 then 'Morning'
             when
                 extract('hour' from transaction_ts) >= 12
-                and extract('hour' from transaction_ts) < 18 then 'AFTERNOON'
+                and extract('hour' from transaction_ts) < 18 then 'Afternoon'
             when
-                extract('hour' from transaction_ts) >= 18 then 'NIGHT'
+                extract('hour' from transaction_ts) >= 18 then 'Night'
         end as work_shift
     from enriched
 )
