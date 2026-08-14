@@ -1,9 +1,9 @@
-from pathlib import Path
-from loguru import logger
 import subprocess
+from pathlib import Path
 
 import dlt
 import pandas as pd
+from loguru import logger
 
 DATA_DIR = Path("data/raw")
 DATABASE_DIR = Path("data/database/db.duckdb")
@@ -42,13 +42,26 @@ def run_dbt():
             cwd=DBT_DIR,
             check=True
         )
-    except Exception:
-        logger.exception("Erro na transformação dos dados.")
-        raise
 
 def main():
-    run_dlt()
-    run_dbt()
+    """
+    Executa o pipeline de ingestão, carregamento e transformação de dados
+    """    
+    pipeline = dlt.pipeline(
+        pipeline_name="sales",
+        destination=dlt.destinations.duckdb(str(DATABASE_DIR)),
+        dataset_name="raw",
+    )
 
-if __name__=="__main__":
+    try:
+        pipeline.run(sales)
+        logger.success("Ingestão bem sucedida.")
+        run_dbt()
+
+    except Exception:
+        logger.exception("Erro na ingestão de dados.")
+        raise
+
+
+if __name__ == "__main__":
     main()
