@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "70ab2bc0d514a8d79285",
   "position": {
-    "x": 31.111111111111111,
-    "y": 277,
-    "z": 6,
+    "x": 656.12598425196848,
+    "y": 276.66141732283461,
+    "z": 1000,
     "height": 452,
     "width": 1232,
-    "tabOrder": 6
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "lineChart",
@@ -91,7 +91,24 @@
                 }
               },
               "queryRef": " Medidas.Receita Total",
-              "nativeQueryRef": "Receita Total"
+              "nativeQueryRef": "Receita Total",
+              "displayName": "Receita Total"
+            }
+          ],
+          "fieldParameters": [
+            {
+              "parameterExpr": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dimParametrosMedidas"
+                    }
+                  },
+                  "Property": "dimParametrosMedidas"
+                }
+              },
+              "index": 0,
+              "length": 1
             }
           ]
         },
@@ -105,10 +122,10 @@
                       "Entity": " Medidas"
                     }
                   },
-                  "Property": "Receita MM 30D"
+                  "Property": "Switch MM 30D"
                 }
               },
-              "queryRef": " Medidas.Receita MM 30D",
+              "queryRef": " Medidas.Switch MM 30D",
               "nativeQueryRef": "Média Móvel",
               "displayName": "Média Móvel"
             }
@@ -162,6 +179,19 @@
             }
           }
         }
+      ],
+      "y2Axis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -172,6 +202,44 @@
               "expr": {
                 "Literal": {
                   "Value": "'Data labels'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": " Medidas"
+                    }
+                  },
+                  "Property": "Format Medida"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'por Data'"
                 }
               }
             }

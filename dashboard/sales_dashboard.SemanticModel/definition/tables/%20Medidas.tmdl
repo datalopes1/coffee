@@ -3,7 +3,7 @@ table ' Medidas'
 
 	measure 'Receita Total' =
 			
-			SUM('fctSales'[order_revenue])
+			SUM ( 'fctSales'[order_revenue] )
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Base
 		lineageTag: 8bade0e6-c2de-425d-92c9-5449bd4a07c6
@@ -12,42 +12,113 @@ table ' Medidas'
 
 	measure 'Qtde Pedidos' =
 			
-			COUNTROWS('fctSales')
+			COUNTROWS ( 'fctSales' )
 		formatString: #,0
 		displayFolder: Base
 		lineageTag: 476bce1d-a38a-43b6-bc8e-0a98d3f6f7ed
 
 	measure 'Ticket Medio' =
 			
-			DIVIDE([Receita Total], [Qtde Pedidos])
+			DIVIDE ( [Receita Total], [Qtde Pedidos] )
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: KPI
 		lineageTag: 1822ddd7-c378-4294-b5e4-0d7e22fac39d
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	measure 'Receita MM 30D' = ```
+	measure 'Receita Total MM 30D' =
 			
-			VAR _Periodo = 
-			CALCULATETABLE(
-			    DATESINPERIOD(
-			        'dimCalendario'[Date],
-			        MAX('fctSales'[transaction_dt]),
-			        -30,
-			        DAY
+			VAR _Periodo =
+			    CALCULATETABLE (
+			        DATESINPERIOD (
+			            'dimCalendario'[Date],
+			            MAX ( 'fctSales'[transaction_dt] ),
+			            -30,
+			            DAY
+			        )
 			    )
-			)
 			RETURN
-			AVERAGEX(
-			    _Periodo,
-			    CALCULATE([Receita Total])
-			)
-			```
+			    AVERAGEX ( _Periodo, CALCULATE ( [Receita Total] ) )
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		displayFolder: KPI
+		displayFolder: Time Intelligence
 		lineageTag: 1483511b-f806-4e70-9ccb-983d181a1ccb
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Format Font Color' =
+			
+			"#FFFFFF"
+		displayFolder: Format
+		lineageTag: 2be47d71-f433-4c0a-a8ea-fe15c56ea20a
+
+	measure 'Receita Total MoM %' =
+			
+			VAR _PreviousPeriod = CALCULATE([Receita Total], DATEADD('dimCalendario'[Date], -1, MONTH))
+			RETURN
+			DIVIDE(
+			    [Receita Total] - _PreviousPeriod, [Receita Total]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Time Intelligence
+		lineageTag: 77ba7f9d-394a-4400-992d-9383a48da623
+
+	measure 'Dash Subtitle' =
+			
+			"Última Atualização – " & MAX('auxRefresh'[DataAtualizacao])
+		displayFolder: Format
+		lineageTag: 8fec0a05-1136-4738-ac5b-a9290d01c199
+
+	measure 'Ticket Medio MoM %' =
+			
+			VAR _PreviousPeriod = CALCULATE([Ticket Medio], DATEADD('dimCalendario'[Date], -1, MONTH))
+			RETURN
+			DIVIDE(
+			    [Ticket Medio] - _PreviousPeriod, [Ticket Medio]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Time Intelligence
+		lineageTag: 7a52917a-04ce-407f-88b9-c4adba7ae380
+
+	measure 'Ticket Medio MM 30D' =
+			
+			VAR _Periodo =
+			    CALCULATETABLE (
+			        DATESINPERIOD (
+			            'dimCalendario'[Date],
+			            MAX ( 'fctSales'[transaction_dt] ),
+			            -30,
+			            DAY
+			        )
+			    )
+			RETURN
+			    AVERAGEX ( _Periodo, CALCULATE ( [Ticket Medio] ) )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Time Intelligence
+		lineageTag: 76703845-33da-47f6-9b8f-39ff2e84973e
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-US"}
+
+	measure 'Format Medida' =
+			
+			SWITCH(
+			    SELECTEDVALUE('dimParametrosMedidas'[dimParametrosMedidas Pedido]),
+			    0, "Receita Total",
+			    1, "Ticket Médio",
+			    BLANK()
+			)
+		displayFolder: Format
+		lineageTag: e8223c90-0eb1-4edd-93fc-84551e451ad0
+
+	measure 'Switch MM 30D' =
+			
+			SWITCH(
+			    SELECTEDVALUE('dimParametrosMedidas'[dimParametrosMedidas Pedido]),
+			    0, [Receita Total MM 30D],
+			    BLANK()
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Time Intelligence
+		lineageTag: 712d1c34-b814-4ae0-9a12-9ce7dca7c173
 
 	column Value
 		isHidden

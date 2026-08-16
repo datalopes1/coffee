@@ -46,8 +46,7 @@ table fctSales
 		annotation SummarizationSetBy = Automatic
 
 	column transaction_ts
-		dataType: dateTime
-		formatString: General Date
+		dataType: string
 		lineageTag: c02c6159-f29f-421c-a954-69c2fd068d0e
 		summarizeBy: none
 		sourceColumn: transaction_ts
@@ -87,7 +86,7 @@ table fctSales
 		mode: import
 		source =
 				let
-				  Source = DuckDB.Contents("\\wsl.localhost\Ubuntu\home\democratabi\coffeesales\data\database\db.duckdb", "localtoken", true, null, null, []),
+				  Source = DuckDB.Contents("C:\Users\datal\coffee\data\database\db.duckdb", "localtoken", true, null, null, []),
 				  #"Navigation 1" = Source{[Item = "fct_sales", Schema = "dwh_mart", Catalog = "db"]}[Data]
 				in
 				  #"Navigation 1"

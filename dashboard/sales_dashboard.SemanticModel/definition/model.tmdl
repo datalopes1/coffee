@@ -20,6 +20,7 @@ ref table fctSales
 ref table auxRefresh
 ref table dimCalendario
 ref table ' Medidas'
+ref table dimParametrosMedidas
 
 ref cultureInfo pt-BR
 

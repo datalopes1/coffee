@@ -1,0 +1,48 @@
+table dimParametrosMedidas
+	lineageTag: e6ebfee6-9ca5-4571-ad42-36b71a631a88
+
+	column dimParametrosMedidas
+		lineageTag: 23555d6e-f27a-4697-b109-bc588c9e7a92
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'dimParametrosMedidas Pedido'
+
+		relatedColumnDetails
+			groupByColumn: 'dimParametrosMedidas Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dimParametrosMedidas Campos'
+		isHidden
+		lineageTag: 671bed03-de0a-422d-9fb2-c19db66c9c13
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'dimParametrosMedidas Pedido'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dimParametrosMedidas Pedido'
+		isHidden
+		formatString: 0
+		lineageTag: 00a55546-3c5c-4808-b43a-4c9ea06a32dd
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dimParametrosMedidas = calculated
+		mode: import
+		source =
+				{
+				    ("Receita Total", NAMEOF(' Medidas'[Receita Total]), 0),
+				    ("Ticket Medio", NAMEOF(' Medidas'[Ticket Medio]), 1)
+				}
+
+	annotation PBI_Id = 68899e3dcccf4207bf8f09f53a6f9fda
+

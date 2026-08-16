@@ -38,7 +38,7 @@ table dimProduct
 		mode: import
 		source =
 				let
-				  Source = DuckDB.Contents("\\wsl.localhost\Ubuntu\home\democratabi\coffeesales\data\database\db.duckdb", "localtoken", true, null, null, []),
+				  Source = DuckDB.Contents("C:\Users\datal\coffee\data\database\db.duckdb", "localtoken", true, null, null, []),
 				  #"Navigation 1" = Source{[Item = "dim_product", Schema = "dwh_mart", Catalog = "db"]}[Data]
 				in
 				  #"Navigation 1"
