@@ -14,7 +14,7 @@ Projeto de criação de um pipeline de dados e visualização de dados a partir 
 ## 📌 Sobre o Projeto
 Este repositório contém um pipeline completo de dados transacionais de uma rede de cafeterias fictícia operando em três localizações em Nova York. O objetivo é extrair insights de negócio, identificar padrões de vendas e fornecer recomendações estratégicas para otimização operacional.
 
-![Imgur](https://i.imgur.com/9bhadG8.png)
+![Imgur](https://i.imgur.com/9cldPlk.png)
 
 ## ⚙️ Tecnologias Utilizadas
 - Python 3.12
