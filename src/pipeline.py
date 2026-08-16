@@ -9,9 +9,11 @@ DATA_DIR = Path("data/raw")
 DATABASE_DIR = Path("data/database/db.duckdb")
 DBT_DIR = Path("dwh")
 
-@dlt.resource(name="sales")
+
+@dlt.resource(name="sales", write_disposition="replace")
 def sales():
     try:
+        logger.info("Inicando a inegstão de dados.")
         for file in sorted(DATA_DIR.glob("*.xlsx")):
             logger.info("Processando o arquivo: {}", file.name)
 
@@ -21,45 +23,36 @@ def sales():
         logger.exception("Erro na ingestão dos dados.")
         raise
 
+
 def run_dlt():
     try:
-        logger.info("Inicando a ingestão dos dados.")
         pipeline = dlt.pipeline(
             pipeline_name="sales",
             destination=dlt.destinations.duckdb(str(DATABASE_DIR)),
             dataset_name="raw",
         )
 
-        pipeline.run(sales, write_disposition='replace')
+        pipeline.run(sales, write_disposition="replace")
         logger.success("Ingestão de dados concluída.")
     except Exception:
         raise
 
+
 def run_dbt():
     try:
-        subprocess.run(
-            ["dbt", "build"],
-            cwd=DBT_DIR,
-            check=True
-        )
+        subprocess.run(["dbt", "build"], cwd=DBT_DIR, check=True)
+    except:
+        logger.exception("Erro na transformação dos dados.")
+
 
 def main():
     """
     Executa o pipeline de ingestão, carregamento e transformação de dados
-    """    
-    pipeline = dlt.pipeline(
-        pipeline_name="sales",
-        destination=dlt.destinations.duckdb(str(DATABASE_DIR)),
-        dataset_name="raw",
-    )
-
+    """
     try:
-        pipeline.run(sales)
-        logger.success("Ingestão bem sucedida.")
+        run_dlt()
         run_dbt()
-
     except Exception:
-        logger.exception("Erro na ingestão de dados.")
         raise
 
 
