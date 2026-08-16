@@ -11,9 +11,9 @@ enriched as (
         product_category,
         product_type,
         product_detail,
-        date_trunc('day', cast(transaction_dt as datetime)) as transaction_dt,
         transaction_qty,
         unit_price,
+        date_trunc('day', cast(transaction_dt as datetime)) as transaction_dt,
         date_trunc(
             'hour',
             cast((cast(transaction_dt as date) || ' ' || transaction_ts) as timestamp)
@@ -24,7 +24,18 @@ enriched as (
 
 final as (
     select
-        *,
+        transaction_id,
+        store_id,
+        product_id,
+        store_location,
+        product_category,
+        product_type,
+        product_detail,
+        transaction_dt,
+        transaction_qty,
+        unit_price,
+        order_revenue,
+        strftime(transaction_ts, '%T') as transaction_ts,
         case
             when
                 extract('hour' from transaction_ts) >= 6
